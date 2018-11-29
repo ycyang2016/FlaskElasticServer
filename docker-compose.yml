@@ -15,6 +15,7 @@ services:
     container_name: elasticsearch1
     restart: always
     environment:
+      - node.name=master
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
@@ -33,6 +34,7 @@ services:
     container_name: elasticsearch2
     restart: always
     environment:
+      - node.name=slaver
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
