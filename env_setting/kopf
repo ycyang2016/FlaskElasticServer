@@ -10,6 +10,8 @@ RUN mkdir /opt/cerebro/logs
 # remove logback file appender
 RUN sed -i '/<appender-ref ref="FILE"\/>/d' /opt/cerebro/conf/logback.xml
 
+COPY ./env_setting/kopf.config /opt/cerebro/conf/application.conf
+
 WORKDIR /opt/cerebro
 EXPOSE 9000
 ENTRYPOINT ["./bin/cerebro"]

@@ -44,28 +44,28 @@ services:
         hard: -1
     volumes:
       - esdata2:/usr/share/elasticsearch/data
+    depends_on:
+      - elasticsearch
     networks:
       - esnet
 
   kopf:
     build:
       context: ./
-      dockerfile: kopf.dockerfile
+      dockerfile: env_setting/kopf
     container_name: elastinterface
     restart: always
     environment:
       TZ: "Asia/Taipei"
     ports:
       - 9000:9000
-    volumes:
-      - ./env_setting/kopf.config:/opt/cerebro/conf/application.conf
     networks:
       - esnet
 
   api:
     build:
       context: ./
-      dockerfile: api_server.dockerfile
+      dockerfile: env_setting/api_server
     container_name: api
     restart: always
     environment:
