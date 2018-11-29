@@ -1,0 +1,2 @@
+# FlaskElasticServer
+內含python flask及elasticsearch的環境
