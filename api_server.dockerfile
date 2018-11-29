@@ -8,7 +8,7 @@ flask_wtf \
 Flask-SQLAlchemy \
 flask_httpauth \
 passlib \
-elasticsearch==6.3.0 \
+elasticsearch==6.3.0
 
 COPY ./env_setting/nginx.config /etc/nginx/conf.d/nginx_setting.conf
 

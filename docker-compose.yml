@@ -8,8 +8,6 @@ volumes:
 
 networks:
   esnet:
-    external:
-      name: esnet
 
 services:
   elasticsearch:
@@ -73,7 +71,7 @@ services:
     environment:
       TZ: "Asia/Taipei"
     ports:
-      - 8080:80
+      - 5000:80
     volumes:
       - ./source_code:/app
     networks:
