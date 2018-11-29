@@ -11,14 +11,10 @@ networks:
 
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.1
+    image: elasticsearch:2.4
     container_name: elasticsearch1
+    command: elasticsearch --cluster.name=docker-cluster --node.name=master --ES_JAVA_OPTS="Xms512m -Xmx512m" --bootstrap.memory_lock=true
     restart: always
-    environment:
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - "discovery.zen.minimum_master_nodes=1"
     ulimits:
       memlock:
         soft: -1
@@ -29,15 +25,10 @@ services:
       - esnet
 
   elasticsearch2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.1
+    image: elasticsearch:2.4
     container_name: elasticsearch2
     restart: always
-    environment:
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - "discovery.zen.ping.unicast.hosts=elasticsearch1"
-      - "discovery.zen.minimum_master_nodes=1"
+    command: elasticsearch --discovery.zen.ping.unicast.hosts=elasticsearch1 --cluster.name=docker-cluster --node.name=slaver --ES_JAVA_OPTS="Xms512m -Xmx512m" --bootstrap.memory_lock=true
     ulimits:
       memlock:
         soft: -1
