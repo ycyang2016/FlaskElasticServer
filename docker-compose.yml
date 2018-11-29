@@ -1,0 +1,81 @@
+version: "2.3"
+
+volumes:
+  esdata1:
+    driver: local
+  esdata2:
+    driver: local
+
+networks:
+  esnet:
+    external:
+      name: esnet
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.1
+    container_name: elasticsearch1
+    restart: always
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.minimum_master_nodes=1"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+    networks:
+      - esnet
+
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.1
+    container_name: elasticsearch2
+    restart: always
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=elasticsearch1"
+      - "discovery.zen.minimum_master_nodes=1"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata2:/usr/share/elasticsearch/data
+    networks:
+      - esnet
+
+  kopf:
+    build:
+      context: ./
+      dockerfile: kopf.dockerfile
+    container_name: elastinterface
+    restart: always
+    environment:
+      TZ: "Asia/Taipei"
+    ports:
+      - 9000:9000
+    volumes:
+      - ./env_setting/kopf.config:/opt/cerebro/conf/application.conf
+    networks:
+      - esnet
+
+  api:
+    build:
+      context: ./
+      dockerfile: api_server.dockerfile
+    container_name: api
+    restart: always
+    environment:
+      TZ: "Asia/Taipei"
+    ports:
+      - 8080:80
+    volumes:
+      - ./source_code:/app
+    networks:
+      - esnet
+

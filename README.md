@@ -1,2 +1,2 @@
 # FlaskElasticServer
-內含python flask及elasticsearch的環境
+內含用docker啟動python flask及elasticsearch的環境
