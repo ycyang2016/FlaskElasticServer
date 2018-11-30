@@ -5,53 +5,62 @@ volumes:
     driver: local
   esdata2:
     driver: local
-
-networks:
-  esnet:
+  esdata3:
+    driver: local
 
 services:
   elasticsearch:
     image: elasticsearch:2.4
     container_name: elasticsearch1
-    command: elasticsearch --cluster.name=docker-cluster --node.name=master --ES_JAVA_OPTS="Xms512m -Xmx512m" --bootstrap.memory_lock=true
+    command: elasticsearch --discovery.zen.ping.unicast.hosts=elasticsearch2,elasticsearch3 --node.name=es1 --cluster.name=docker-cluster  --bootstrap.memory_lock=true --discovery.zen.minimum_master_nodes=2 --ES_JAVA_OPTS="Xms512m -Xmx512m"
     restart: always
+    environment:
+      - TZ=Asia/Taipei
     ulimits:
       memlock:
         soft: -1
         hard: -1
     volumes:
       - esdata1:/usr/share/elasticsearch/data
-    networks:
-      - esnet
 
   elasticsearch2:
     image: elasticsearch:2.4
     container_name: elasticsearch2
     restart: always
-    command: elasticsearch --discovery.zen.ping.unicast.hosts=elasticsearch1 --cluster.name=docker-cluster --node.name=slaver --ES_JAVA_OPTS="Xms512m -Xmx512m" --bootstrap.memory_lock=true
+    command: elasticsearch --discovery.zen.ping.unicast.hosts=elasticsearch1,elasticsearch3 --node.name=es2 --cluster.name=docker-cluster  --bootstrap.memory_lock=true --discovery.zen.minimum_master_nodes=2 --ES_JAVA_OPTS="Xms512m -Xmx512m"
+    environment:
+      - TZ=Asia/Taipei    
     ulimits:
       memlock:
         soft: -1
         hard: -1
     volumes:
       - esdata2:/usr/share/elasticsearch/data
-    depends_on:
-      - elasticsearch
-    networks:
-      - esnet
+
+  elasticsearch3:
+    image: elasticsearch:2.4
+    container_name: elasticsearch3
+    restart: always
+    command: elasticsearch --discovery.zen.ping.unicast.hosts=elasticsearch1,elasticsearch2 --node.name=es3 --cluster.name=docker-cluster  --bootstrap.memory_lock=true --discovery.zen.minimum_master_nodes=2 --ES_JAVA_OPTS="Xms512m -Xmx512m"
+    environment:
+      - TZ=Asia/Taipei
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata3:/usr/share/elasticsearch/data
 
   kopf:
-    build:
-      context: ./
-      dockerfile: env_setting/kopf
+    image: lmenezes/cerebro:0.8.1
     container_name: elastinterface
     restart: always
     environment:
       TZ: "Asia/Taipei"
+    volumes:
+      - ./env_setting/kopf.config:/opt/cerebro/conf/application.conf
     ports:
       - 9000:9000
-    networks:
-      - esnet
 
   api:
     build:
@@ -65,6 +74,5 @@ services:
       - 5000:80
     volumes:
       - ./source_code:/app
-    networks:
-      - esnet
+
 
