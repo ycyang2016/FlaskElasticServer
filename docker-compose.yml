@@ -7,8 +7,6 @@ volumes:
     driver: local
   esdata3:
     driver: local
-  esdata4:
-    driver: local
 
 services:
   elasticsearch:
