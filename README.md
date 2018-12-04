@@ -67,10 +67,17 @@ docker-compose up -d
   mysql:
   1. MYSQL_ROOT_PASSWORD: root的密碼，請修改
   2. MYSQL_ALLOW_EMPTY_PASSWORD: 是否允許root無密碼登入
+  
+  注意：環境變數在沒有任何資料庫存在時，才會生效，更多的環境變數可參考底下的 mysql-docker 連結
   ```
   ```
   redis:
   1. ALLOW_EMPTY_PASSWORD: 是否允許無密碼登入
+  ```
+* command
+  ```
+  mysql:
+  1. --default-authentication-plugin=mysql_native_password：預設使用傳統mysql的加密方式，若想使用新版的請移除command
   ```
 ### Flask api server dockerfile
 * 位置：my_application/env_setting/api_server
@@ -98,4 +105,5 @@ docker-compose up -d
 * [nginx](https://unit.nginx.org/)
 * [flask](http://flask.pocoo.org/)
 * [redis](https://redis-py.readthedocs.io/en/latest/)
-* [mysql](https://dev.mysql.com/doc/relnotes/mysql/8.0/en/news-8-0-13.html)
+* [mysql](https://dev.mysql.com/doc/relnotes/mysql/8.0/en/news-8-0-13.html)]
+* [mysql-docker](http://blog.51cto.com/aaronsa/2133984)
