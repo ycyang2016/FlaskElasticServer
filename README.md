@@ -32,7 +32,11 @@ docker-compose up -d
 ### docker-compose.yml
 * container
   ```
-  三個 elasticsearch 的節點、一個 elasticsearch 介面(KOPF)及 Flask api server
+  1. 三個 elasticsearch 6.5 的節點
+  2. 一個 elasticsearch 介面(KOPF)
+  3. Flask api server
+  4. Mysql 8.0
+  5. redis 5.0.2
   ```
 * networks and ports
   ```
@@ -41,7 +45,7 @@ docker-compose up -d
   ```
 * volumes
   ```
-  1. elasticsearch 的節點皆使用 local volume，若有需求可自行導到外部的資料夾上
+  1. elasticsearch 的節點、mysql、redis皆使用 local volume，若有需求可自行導到外部的資料夾上
   2. KOPF 的設定檔存放在 my_application/env_setting/kopf.config 中
   3. Flask api server 的程式碼存放在 my_application/source_code 中
   ```
