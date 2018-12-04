@@ -92,6 +92,7 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: "no"
     volumes:
       - mysqldata:/var/lib/mysql
+      - ./env_setting/mysql.config:/etc/mysql/conf.d/docker.cnf
     ports:
       - 3306:3306
 
