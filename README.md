@@ -73,6 +73,7 @@ docker-compose up -d
 * 環境：uwsgi+nginx+python2.7
 * uwsgi設定檔位置：my_application/source_code/uwsgi.ini
 * nginx設定檔位置：my_application/env_setting/nginx.config
+* redis設定檔位置：my_application/env_setting/redis.config
 * python套件：
   ```
   1. MySQL-python
