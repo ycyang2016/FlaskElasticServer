@@ -85,6 +85,7 @@ services:
     image: mysql:8.0
     container_name: mysql
     restart: always
+    command: mysqld --default-authentication-plugin=mysql_native_password
     environment:
       TZ: "Asia/Taipei"
       MYSQL_ROOT_PASSWORD: "please modify this value"
