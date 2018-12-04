@@ -18,7 +18,7 @@
 `sudo pip install docker-compose`
 # 快速安裝
 ### 下載安裝包
-`git clone https://github.com/ycyang2016/FlaskElasticServe my_application`
+`git clone https://github.com/ycyang2016/FlaskElasticServer my_application`
 ### 啟動系統
 ```
 sudo sysctl -w vm.max_map_count=262144
