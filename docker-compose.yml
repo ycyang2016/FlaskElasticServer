@@ -105,6 +105,7 @@ services:
     volumes:
       - redisdata:/data
       - ./env_setting/redis.config:/usr/local/etc/redis/redis.conf
+      
   api:
     build:
       context: ./
