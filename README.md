@@ -22,6 +22,9 @@
 ### 啟動系統
 ```
 sudo sysctl -w vm.max_map_count=262144
+sudo sysctl -w vm.overcommit_memory=1
+sudo echo never > /sys/kernel/mm/transparent_hugepage/enabled
+sudo echo never > /sys/kernel/mm/transparent_hugepage/defrag
 cd my_application
 docker-compose up -d
 ```
@@ -44,13 +47,26 @@ docker-compose up -d
   ```
 * environment
   ```
+  general:
   1. TZ=Asia/Taipei：將時間設定為UTC+8
-  2. cluster.name=docker-cluster：所有的節點叢集名稱必須相同
-  3. node.name=es1：節點名稱
-  4. bootstrap.memory_lock=true：重新啟動時比較不會crash
-  5. "ES_JAVA_OPTS=-Xms512m -Xmx512m"：設定記憶體限制，預設為2G
-  6. "discovery.zen.minimum_master_nodes=2"：設定主節點數量，一般會大於2，但只有節點數小於2時需為1
-  7. "discovery.zen.ping.unicast.hosts=elasticsearch2,elasticsearch3"：其他節點的IP位置，無須列出所有節點
+  ```
+  ```
+  elasticsearch:
+  1. cluster.name=docker-cluster：所有的節點叢集名稱必須相同
+  2. node.name=es1：節點名稱
+  3. bootstrap.memory_lock=true：重新啟動時比較不會crash
+  4. "ES_JAVA_OPTS=-Xms512m -Xmx512m"：設定記憶體限制，預設為2G
+  5. "discovery.zen.minimum_master_nodes=2"：設定主節點數量，一般會大於2，但只有節點數小於2時需為1
+  6. "discovery.zen.ping.unicast.hosts=elasticsearch2,elasticsearch3"：其他節點的IP位置，無須列出所有節點
+  ```
+  ```
+  mysql:
+  1. MYSQL_ROOT_PASSWORD: root的密碼，請修改
+  2. MYSQL_ALLOW_EMPTY_PASSWORD: 是否允許root無密碼登入
+  ```
+  ```
+  redis:
+  1. ALLOW_EMPTY_PASSWORD: 是否允許無密碼登入
   ```
 ### Flask api server dockerfile
 * 位置：my_application/env_setting/api_server
@@ -66,6 +82,7 @@ docker-compose up -d
   5. flask_httpauth
   6. passlib
   7. elasticsearch
+  8. redis
   ```
 # 連結
 * [docker](https://docs.docker.com/)
@@ -75,3 +92,5 @@ docker-compose up -d
 * [uwsgi](https://uwsgi-docs.readthedocs.io/en/latest/)
 * [nginx](https://unit.nginx.org/)
 * [flask](http://flask.pocoo.org/)
+* [redis](https://redis-py.readthedocs.io/en/latest/)
+* [mysql](https://dev.mysql.com/doc/relnotes/mysql/8.0/en/news-8-0-13.html)
