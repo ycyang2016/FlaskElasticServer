@@ -107,5 +107,5 @@ docker-compose up -d
 * [nginx](https://unit.nginx.org/)
 * [flask](http://flask.pocoo.org/)
 * [redis](https://redis-py.readthedocs.io/en/latest/)
-* [mysql](https://dev.mysql.com/doc/relnotes/mysql/8.0/en/news-8-0-13.html)]
+* [mysql](https://dev.mysql.com/doc/relnotes/mysql/8.0/en/news-8-0-13.html)
 * [mysql-docker](http://blog.51cto.com/aaronsa/2133984)
